@@ -1,0 +1,13 @@
+.ipynb_checkpoints/1_emo_recog_tf283_resnet50_224-checkpoint.ipynb
+del_emo_recog_tf283_resnet50_320.ipynb
+.ipynb_checkpoints/2_emo_recog_tf283_resnet50_320-checkpoint.ipynb
+.ipynb_checkpoints/3_emo_recog_tf283_resnet50_200_64-checkpoint.ipynb
+.ipynb_checkpoints/4_emo_recog_tf283_resnet50_224_64-checkpoint.ipynb
+.ipynb_checkpoints/5_emo_recog_tf283_resnet50_320_64-checkpoint.ipynb
+.ipynb_checkpoints/6_emo_recog_tf283_MobileNetv2_224_64-checkpoint.ipynb
+.ipynb_checkpoints/7_emo_recog_tf283_custom_224_64-checkpoint.ipynb
+.ipynb_checkpoints/8_emo_recog_tf283_custom_200_64-checkpoint.ipynb
+.ipynb_checkpoints/best_emo_recog_tf283_custom_200_64-checkpoint.ipynb
+.ipynb_checkpoints/del_emo_recog_tf283_resnet50_320-checkpoint.ipynb
+.ipynb_checkpoints/sample_submission-checkpoint.csv
+.ipynb_checkpoints/train-checkpoint.csv
