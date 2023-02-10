@@ -11,3 +11,7 @@ del_emo_recog_tf283_resnet50_320.ipynb
 .ipynb_checkpoints/del_emo_recog_tf283_resnet50_320-checkpoint.ipynb
 .ipynb_checkpoints/sample_submission-checkpoint.csv
 .ipynb_checkpoints/train-checkpoint.csv
+test.ipynb
+haarcascade_frontalface_default.xml
+test_2.ipynb
+model_norm_aug_custom_2_15
