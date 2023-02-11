@@ -27,14 +27,13 @@ class EmoRecog(object):
     def get_frame_emotion(self, frame):
         emotion, box = self.get_emotion_box(frame)
         x, y, w, h = box
-        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        rgb_frame = cv2.rectangle(rgb_frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
-        rgb_frame = cv2.putText(rgb_frame, emotion[0], (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
-        return rgb_frame
+        frame = cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
+        frame = cv2.putText(frame, emotion[0], (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+        return frame, emotion
     
 IMG_HEIGHT = 200
 IMG_WIDTH = 200
-MODEL_PATH = 'models/model_norm_aug_custom_2/model_norm_aug_custom_2_15'
+MODEL_PATH = 'code/model_norm_aug_custom_2_15'
 
 emotion_mapping = {0: 'anger',
 1: 'contempt',
@@ -46,7 +45,7 @@ emotion_mapping = {0: 'anger',
 7: 'surprise',
 8: 'uncertain'}
 
-face_detector = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+face_detector = cv2.CascadeClassifier('code/haarcascade_frontalface_default.xml')
 emotion_recognition_tool = EmoRecog(MODEL_PATH, 
                                     IMG_HEIGHT, 
                                     IMG_WIDTH, 
@@ -65,6 +64,12 @@ while(True):
         break
     
     if cv2.waitKey(1) & 0xFF == ord('e'):
-        cv2.destroyAllWindows()
-        frame = emotion_recognition_tool.get_frame_emotion(frame)
-        cv2.imshow("facial emotion recognition", frame)
+        cv2.imwrite('code/frames/emotion_frame.jpg', frame)
+        break
+
+frame = cv2.imread('code/frames/emotion_frame.jpg')
+  
+frame, emotion = emotion_recognition_tool.get_frame_emotion(frame)
+print(emotion[0])
+cv2.imshow("facial emotion recognition", frame)
+cv2.waitKey(0)
