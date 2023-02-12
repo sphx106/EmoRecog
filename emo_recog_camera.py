@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 
 class EmoRecog(object):
 
-    def __init__(self, model_path, img_height, img_width, face_detector, emotion_mapping):
-        self.model = tf.keras.models.load_model(model_path)
+    def __init__(self, model, img_height, img_width, face_detector, emotion_mapping):
+        self.model = model
         self.img_height = img_height
         self.img_width = img_width
         self.face_detector = face_detector
@@ -35,6 +35,8 @@ IMG_HEIGHT = 200
 IMG_WIDTH = 200
 MODEL_PATH = 'code/model_norm_aug_custom_2_15'
 
+face_model = tf.keras.models.load_model(MODEL_PATH)
+
 emotion_mapping = {0: 'anger',
 1: 'contempt',
 2: 'disgust',
@@ -46,7 +48,7 @@ emotion_mapping = {0: 'anger',
 8: 'uncertain'}
 
 face_detector = cv2.CascadeClassifier('code/haarcascade_frontalface_default.xml')
-emotion_recognition_tool = EmoRecog(MODEL_PATH, 
+emotion_recognition_tool = EmoRecog(face_model, 
                                     IMG_HEIGHT, 
                                     IMG_WIDTH, 
                                     face_detector, 
