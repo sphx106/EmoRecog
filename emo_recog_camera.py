@@ -30,12 +30,10 @@ class EmoRecog(object):
         frame = cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
         frame = cv2.putText(frame, emotion[0], (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
         return frame, emotion
-    
+     
 IMG_HEIGHT = 200
 IMG_WIDTH = 200
-MODEL_PATH = 'code/model_norm_aug_custom_2_15'
-
-face_model = tf.keras.models.load_model(MODEL_PATH)
+WEIGHTS_PATH = 'code/emo_weights.h5'
 
 emotion_mapping = {0: 'anger',
 1: 'contempt',
@@ -46,6 +44,37 @@ emotion_mapping = {0: 'anger',
 6: 'sad',
 7: 'surprise',
 8: 'uncertain'}
+
+augmentation_layer = tf.keras.Sequential([tf.keras.layers.RandomFlip("horizontal"),
+                                          tf.keras.layers.RandomRotation(0.1),
+                                          tf.keras.layers.RandomContrast(0.1)])
+normalization_layer = tf.keras.layers.Rescaling(scale=1./127.5, offset=-1)    
+
+inputs = tf.keras.Input(shape=(IMG_HEIGHT, IMG_WIDTH, 3))
+x = augmentation_layer(inputs)
+x = normalization_layer(x)
+x = tf.keras.layers.Conv2D(32, (3, 3), activation='relu', padding='same')(x)
+x = tf.keras.layers.Conv2D(32, (3, 3), activation='relu', padding='same')(x)
+x = tf.keras.layers.AveragePooling2D()(x)
+x = tf.keras.layers.Conv2D(64, (3, 3), activation='relu', padding='same')(x)
+x = tf.keras.layers.Conv2D(64, (3, 3), activation='relu', padding='same')(x)
+x = tf.keras.layers.AveragePooling2D()(x)
+x = tf.keras.layers.Conv2D(128, (3, 3), activation='relu', padding='same')(x)
+x = tf.keras.layers.Conv2D(128, (3, 3), activation='relu', padding='same')(x)
+x = tf.keras.layers.AveragePooling2D()(x)
+x = tf.keras.layers.SpatialDropout2D(0.5)(x)
+x = tf.keras.layers.Flatten()(x)
+x = tf.keras.layers.Dense(128, activation='relu')(x)
+x = tf.keras.layers.Dense(64, activation='relu')(x)
+outputs = tf.keras.layers.Dense(len(emotion_mapping), activation='softmax')(x)
+face_model = tf.keras.Model(inputs, outputs)
+
+face_model.compile(optimizer='adam', 
+                   loss='categorical_crossentropy', 
+                   metrics=['categorical_accuracy'])
+
+face_model.build(input_shape=(IMG_HEIGHT, IMG_WIDTH, 3))
+face_model.load_weights(WEIGHTS_PATH)
 
 face_detector = cv2.CascadeClassifier('code/haarcascade_frontalface_default.xml')
 emotion_recognition_tool = EmoRecog(face_model, 
