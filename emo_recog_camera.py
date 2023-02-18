@@ -33,7 +33,7 @@ class EmoRecog(object):
      
 IMG_HEIGHT = 200
 IMG_WIDTH = 200
-WEIGHTS_PATH = 'code/emo_weights.h5'
+WEIGHTS_PATH = 'emo_weights.h5'
 
 emotion_mapping = {0: 'anger',
 1: 'contempt',
@@ -76,7 +76,7 @@ face_model.compile(optimizer='adam',
 face_model.build(input_shape=(IMG_HEIGHT, IMG_WIDTH, 3))
 face_model.load_weights(WEIGHTS_PATH)
 
-face_detector = cv2.CascadeClassifier('code/haarcascade_frontalface_default.xml')
+face_detector = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 emotion_recognition_tool = EmoRecog(face_model, 
                                     IMG_HEIGHT, 
                                     IMG_WIDTH, 
@@ -95,10 +95,10 @@ while(True):
         break
     
     if cv2.waitKey(1) & 0xFF == ord('e'):
-        cv2.imwrite('code/frames/emotion_frame.jpg', frame)
+        cv2.imwrite('emotion_frame.jpg', frame)
         break
 
-frame = cv2.imread('code/frames/emotion_frame.jpg')
+frame = cv2.imread('emotion_frame.jpg')
   
 frame, emotion = emotion_recognition_tool.get_frame_emotion(frame)
 print(emotion[0])
